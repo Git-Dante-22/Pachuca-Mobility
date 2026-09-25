@@ -2,9 +2,6 @@ name: Pachuca Mobility Traffic Collector
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "7,37 * * * *"
-      timezone: "America/Mexico_City"
 
 permissions:
   contents: write
