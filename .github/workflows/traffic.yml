@@ -3,7 +3,7 @@ name: Pachuca Mobility Traffic Collector
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 * * * *"
+    - cron: "7,37 * * * *"
 
 permissions:
   contents: write
