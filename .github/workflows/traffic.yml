@@ -27,16 +27,20 @@ jobs:
           TOMTOM_API_KEY: ${{ secrets.TOMTOM_API_KEY }}
         run: python collector.py
 
-      - name: Persist traffic history
+      - name: Build Gold layer
+        run: python build_gold.py
+
+      - name: Persist traffic and Gold data
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add data/silver/traffic/2026-09.csv
+          git add data/silver/traffic/
+          git add data/gold/traffic/
 
           if git diff --cached --quiet; then
-            echo "No hay cambios nuevos en el histórico."
+            echo "No hay cambios nuevos en Silver o Gold."
           else
-            git commit -m "Update traffic history"
+            git commit -m "Update traffic and gold data"
             git push
           fi
