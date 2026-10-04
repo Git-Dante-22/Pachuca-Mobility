@@ -99,7 +99,7 @@ def consultar_segmento(lat, lon, api_key):
     current_time = flow["currentTravelTime"]
     free_flow_time = flow["freeFlowTravelTime"]
 
-        print(
+    print(
         f"{monitor_point_id} | "
         f"{lat},{lon} | "
         f"currentSpeed={current_speed} | "
