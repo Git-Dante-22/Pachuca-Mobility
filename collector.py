@@ -72,7 +72,7 @@ PUNTOS_MONITOREO = {
 }
 
 
-def consultar_segmento(lat, lon, api_key):
+def consultar_segmento(monitor_point_id,lat, lon, api_key):
     """Consulta TomTom Flow Segment Data para un punto."""
     params = {
         "key": api_key,
