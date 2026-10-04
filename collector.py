@@ -71,6 +71,69 @@ PUNTOS_MONITOREO = {
     },
 }
 
+def diagnosticar_mp003(api_key):
+    """Prueba puntos cercanos a MP003 para diagnosticar disponibilidad de TomTom."""
+
+    puntos_prueba = {
+        "MP003_ORIGINAL": (
+            20.055266,
+            -98.787273,
+        ),
+        "MP003_CERCANO": (
+            20.055368,
+            -98.787460,
+        ),
+        "MP003_ANTES": (
+            20.055458,
+            -98.787411,
+        ),
+        "MP003_DESPUES": (
+            20.055291,
+            -98.787502,
+        ),
+    }
+
+    print()
+    print("================================")
+    print("DIAGNÓSTICO MP003")
+    print("================================")
+
+    for nombre, (lat, lon) in puntos_prueba.items():
+
+        params = {
+            "key": api_key,
+            "point": f"{lat},{lon}",
+            "unit": "kmph",
+            "openLr": "true",
+        }
+
+        response = requests.get(
+            TOMTOM_URL,
+            params=params,
+            timeout=30,
+        )
+
+        if response.status_code != 200:
+            print(
+                f"{nombre} | HTTP {response.status_code}"
+            )
+            continue
+
+        flow = response.json()["flowSegmentData"]
+
+        print(
+            f"{nombre} | "
+            f"{lat},{lon} | "
+            f"currentSpeed={flow.get('currentSpeed')} | "
+            f"freeFlowSpeed={flow.get('freeFlowSpeed')} | "
+            f"currentTime={flow.get('currentTravelTime')} | "
+            f"freeFlowTime={flow.get('freeFlowTravelTime')} | "
+            f"confidence={flow.get('confidence')} | "
+            f"openLR={flow.get('openlr')}"
+        )
+
+    print("================================")
+    print()
 
 def consultar_segmento(monitor_point_id,lat, lon, api_key):
     """Consulta TomTom Flow Segment Data para un punto."""
@@ -129,7 +192,6 @@ def consultar_segmento(monitor_point_id,lat, lon, api_key):
         "confidence": flow.get("confidence"),
         "road_closure": flow.get("roadClosure"),
     }
-
 
 def crear_captura(api_key):
     """Genera una captura completa de los seis puntos."""
@@ -310,6 +372,8 @@ def main():
 
     print()
     print("Generando nueva captura...")
+
+    diagnosticar_mp003(api_key)
 
     df_captura = crear_captura(api_key)
 
