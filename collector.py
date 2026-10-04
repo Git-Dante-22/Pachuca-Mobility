@@ -99,6 +99,15 @@ def consultar_segmento(lat, lon, api_key):
     current_time = flow["currentTravelTime"]
     free_flow_time = flow["freeFlowTravelTime"]
 
+        print(
+        f"{monitor_point_id} | "
+        f"{lat},{lon} | "
+        f"currentSpeed={current_speed} | "
+        f"freeFlowSpeed={free_flow_speed} | "
+        f"currentTime={current_time} | "
+        f"freeFlowTime={free_flow_time}"
+    )
+
     speed_loss_pct = (
         (free_flow_speed - current_speed)
         / free_flow_speed
@@ -130,6 +139,7 @@ def crear_captura(api_key):
 
     for monitor_point_id, punto in PUNTOS_MONITOREO.items():
         resultado = consultar_segmento(
+            monitor_point_id,
             punto["lat"],
             punto["lon"],
             api_key,
